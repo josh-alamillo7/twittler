@@ -11,14 +11,38 @@
         var $body = $('body');
         $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+
+
+        //$body is a variable representing the body tag
+
+        var tweetIndexTracker = 0
+        function displayTweets(endIndex) {
+          var index = streams.home.length - 1; //streams.home is an array of all the tweets, start at the last one
+        
+            while(index >= endIndex){
+              var tweet = streams.home[index]; //tweet is the tweet at that index in streams, tweet is the actual object that got extracted from streams
+              var $tweet = $('<div></div>');
+              var $alltweets = $('<div></div>'); //tweet is a new one in a div div thing
+
+          
+              $tweet.text('@' + tweet.user + ': ' + tweet.message + "\n"); //replaces text of each tweet with a string summary using the properties of tweet(no dollar sign)
+              $tweet.appendTo($alltweets); //this adds tweet to the actual body so that it's displayed?
+              $alltweets.appendTo($body);
+              index -= 1; //counts down until there are no tweets left.
+              tweetIndexTracker += 1;
+          }
         }
+
+        displayTweets(tweetIndexTracker)
+
+        var $button = $('<button type = "button">Show me more tweets!</button>');
+        $button.appendTo($body);
+
+        $('button').on('click', function() {
+
+          displayTweets(tweetIndexTracker);
+  
+          });
 
       });
 
