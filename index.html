@@ -12,59 +12,78 @@
         $body.html('');
         $body.css({"background": "linear-gradient(to right, white, green)"})
 
+        var allTweets = {}
+
+
+
 
 
         //$body is a variable representing the body tag
 
-        var tweetIndexTracker = 0
-        function displayTweets(endIndex) {
-          var initialization = (endIndex === 0)
+          var tweetIndexTracker = 0
 
-          var $new_tweets = $('<div></div>');
-          var index = streams.home.length - 1; //streams.home is an array of all the tweets, start at the last one
+          function displayTweets(endIndex) {
+            var initialization = (endIndex === 0)
+
+
+            var $new_tweets = $('<div></div>');
+            var index = streams.home.length - 1; //streams.home is an array of all the tweets, start at the last one
         
-            while(index >= endIndex){
-              var tweet = streams.home[index]; //tweet is the tweet at that index in streams, tweet is the actual object that got extracted from streams
-              var $tweet = $('<div></div>');//tweet is a new div
-              var $time = $('<div></div>');//time is a new object
-              var $userlink = $('<div></div>')
-              //position the name property 
+              while(index >= endIndex){
+                var tweet = streams.home[index]; //tweet is the tweet at that index in streams, tweet is the actual object that got extracted from streams
+                var $tweet = $('<div></div>');//tweet is a new div
+                var $time = $('<div></div>');//time is a new object
+                var $userlink = $('<a href="' + tweet.user + '.html"></a>');
               
+                //userlink properties
+                $userlink.text(tweet.user)
+                $userlink.css({"font-size": "16px", "text-decoration": "underline", "color": "blue", "padding-right": "8px"})
 
-              $userlink.text(tweet.user)
-              $userlink.css({"font-size": "20px", "text-decoration": "underline", "color": "blue"})
+                //tweet properties
+                $tweet.text(tweet.message); //replaces text of each tweet with a string summary using the properties of tweet(no dollar sign)
+                $tweet.css({"font-size": "19px"})
 
-              
-              $tweet.text(tweet.message); //replaces text of each tweet with a string summary using the properties of tweet(no dollar sign)
-              $tweet.css({"font-size": "22px"})
-              $time.text("Tweeted on " + tweet.created_at)
-              $time.css({"font-size": "15px", "color": "gray", "padding-bottom": "10px"})
-              $tweet.appendTo($new_tweets)
+                //timestap properties
+                $time.text("Tweeted on " + tweet.created_at)
+                $time.css({"font-size": "13px", "color": "gray", "padding-bottom": "10px"})
+
+                //add tweet to new tweets
+                $tweet.appendTo($new_tweets)
+
+                if (!allTweets.hasOwnProperty(tweet.user)) {
+                  allTweets[tweet.user] = [tweet.message]
+                }
+                else {
+                  allTweets[tweet.user].push(tweet.message)
+                }
 
 
-              index -= 1; //counts down until there are no tweets left.
-              tweetIndexTracker += 1;
-              if (initialization) {
-                $userlink.prependTo($tweet)
-                $tweet.appendTo($body)
-                $time.appendTo($tweet)
+                index -= 1; //counts down until there are no tweets left.
+                tweetIndexTracker += 1;
 
+
+                if (initialization) {
+                  $userlink.prependTo($tweet)
+                  $tweet.appendTo($body)
+                  $time.appendTo($tweet)
+
+                }
+                else {
+                  $userlink.prependTo($tweet)
+                  $time.appendTo($tweet)
+                }
               }
-              else {
-                $userlink.prependTo($tweet)
-                $time.appendTo($tweet)
-              }
-            }
-          $new_tweets.prependTo($body)
+
+            $new_tweets.prependTo($body)
           
-        }
+          }
 
         //Initialize tweets
         displayTweets(tweetIndexTracker)
 
 
         //Button initializer and handler function
-        var $button = $('<button type = "button">Show me more tweets!</button>');
+        var $button = $('<button type = "button">Show me new tweets!</button>');
         $button.appendTo($body);
         $button.css({"background-color": "#e7e7e7"}, {"font-size": "17px"}, {"text-align": "center"})
 
@@ -74,10 +93,8 @@
   
           });
 
-        //Handler for click on username.
-        function displayUserTimeline(user) {
-          
-        }
+        
+
 
       });
 
