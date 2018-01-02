@@ -6,7 +6,6 @@
   </head>
   <body>
     <script>
-      var allTweets = {}
 
       $(document).ready(function(){
         var $body = $('body');
@@ -20,8 +19,6 @@
 
           function displayTweets(endIndex) {
             var initialization = (endIndex === 0)
-
-
             var $new_tweets = $('<div></div>');
             var index = streams.home.length - 1; //streams.home is an array of all the tweets, start at the last one
         
@@ -44,14 +41,7 @@
                 $time.css({"font-size": "13px", "color": "gray", "padding-bottom": "10px"})
 
                 //add tweet to new tweets
-                $tweet.appendTo($new_tweets)
-
-                if (!allTweets.hasOwnProperty(tweet.user)) {
-                  allTweets[tweet.user] = [tweet.message]
-                }
-                else {
-                  allTweets[tweet.user].push(tweet.message)
-                }
+                
 
 
                 index -= 1; //counts down until there are no tweets left.
@@ -67,6 +57,7 @@
                 else {
                   $userlink.prependTo($tweet)
                   $time.appendTo($tweet)
+                  $tweet.appendTo($new_tweets)
                 }
               }
 
@@ -75,7 +66,7 @@
           }
 
         //Initialize tweets
-        displayTweets(tweetIndexTracker)
+        displayTweets(tweetIndexTracker);
 
 
         //Button initializer and handler function
@@ -86,33 +77,54 @@
         $('button').on('click', function() {
 
           displayTweets(tweetIndexTracker);
-  
+
           });
+
+
 
         $('.userlink').on('click', function() {
 
           var username = $(this).text()
           $body.empty()
 
+          var $opener = $("<div></div>")
+          $opener.text(username + "'s tweets:")
+          $opener.css({"font-size": "30px", "font-weight": "bold", "padding-bottom": "13px"})
+          $opener.appendTo($body)
+
           for (var i = streams.users[username].length - 1; i >= 0; i--) {
 
             var $usertweet = $("<div></div>")
             var $usertimestamp = $("<div></div>")
 
-            $usertweet.text("hey")
 
 
             usertweet = streams.users[username][i].message
             usertimestamp = streams.users[username][i].created_at
 
             $usertweet.text(usertweet);
-            $usertimestamp.text(usertimestamp);
+            $usertweet.css({"font-size": "19px"})
+            $usertimestamp.text("Tweeted on " + usertimestamp);
+            $usertimestamp.css({"font-size": "13px", "color": "gray", "padding-bottom": "10px"})
+
 
 
             $usertweet.appendTo($body);
             $usertimestamp.appendTo($body);
 
           }
+
+          var $backbutton = $('<backbutton type = "button">Go back!</backbutton>');
+          $backbutton.appendTo($body);
+          $backbutton.css({"background-color": "#e7e7e7"}, {"font-size": "17px"}, {"text-align": "center"})
+
+          $('backbutton').on('click', function() {
+            tweetIndexTracker = 0
+            $body.empty()
+            displayTweets(tweetIndexTracker)
+
+          
+          });
           
         });
 
