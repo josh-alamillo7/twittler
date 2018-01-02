@@ -6,16 +6,12 @@
   </head>
   <body>
     <script>
+      var allTweets = {}
 
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
         $body.css({"background": "linear-gradient(to right, white, green)"})
-
-        var allTweets = {}
-
-
-
 
 
         //$body is a variable representing the body tag
@@ -31,9 +27,9 @@
         
               while(index >= endIndex){
                 var tweet = streams.home[index]; //tweet is the tweet at that index in streams, tweet is the actual object that got extracted from streams
-                var $tweet = $('<div></div>');//tweet is a new div
+                var $tweet = $('<div class="tweet"></div>');//tweet is a new div
                 var $time = $('<div></div>');//time is a new object
-                var $userlink = $('<a href="' + tweet.user + '.html"></a>');
+                var $userlink = $('<div class="userlink"></div>');
               
                 //userlink properties
                 $userlink.text(tweet.user)
@@ -43,7 +39,7 @@
                 $tweet.text(tweet.message); //replaces text of each tweet with a string summary using the properties of tweet(no dollar sign)
                 $tweet.css({"font-size": "19px"})
 
-                //timestap properties
+                //timestamp properties
                 $time.text("Tweeted on " + tweet.created_at)
                 $time.css({"font-size": "13px", "color": "gray", "padding-bottom": "10px"})
 
@@ -93,8 +89,32 @@
   
           });
 
-        
+        $('.userlink').on('click', function() {
 
+          var username = $(this).text()
+          $body.empty()
+
+          for (var i = streams.users[username].length - 1; i >= 0; i--) {
+
+            var $usertweet = $("<div></div>")
+            var $usertimestamp = $("<div></div>")
+
+            $usertweet.text("hey")
+
+
+            usertweet = streams.users[username][i].message
+            usertimestamp = streams.users[username][i].created_at
+
+            $usertweet.text(usertweet);
+            $usertimestamp.text(usertimestamp);
+
+
+            $usertweet.appendTo($body);
+            $usertimestamp.appendTo($body);
+
+          }
+          
+        });
 
       });
 
