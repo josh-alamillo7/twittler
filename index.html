@@ -18,6 +18,7 @@
           var tweetIndexTracker = 0
 
           function displayTweets(endIndex) {
+            $body.css({"background": "linear-gradient(to right, white, green)"})
             var initialization = (endIndex === 0)
             var $new_tweets = $('<div></div>');
             var index = streams.home.length - 1; //streams.home is an array of all the tweets, start at the last one
@@ -89,6 +90,7 @@
 
           var username = $(this).text()
           $body.empty()
+          $body.css({"background": "linear-gradient(to right, white, " + randomElement(["red", "orange", "yellow", "blue", "pink", "purple"])})
 
           var $opener = $("<div></div>")
           $opener.text(username + "'s tweets:")
@@ -126,6 +128,21 @@
             $body.empty()
             displayTweets(tweetIndexTracker)
             $('.userlink').on('click', userlinkHandler)
+
+
+//THIS WAS PASTED IN
+            var $button = $('<button type = "button">Show me new tweets!</button>');
+            $button.appendTo($body);
+            $button.css({"background-color": "#e7e7e7"}, {"font-size": "17px"}, {"text-align": "center"})
+
+            $('button').on('click', function() {
+
+              displayTweets(tweetIndexTracker);
+              $('.userlink').on('click', userlinkHandler);
+
+            });
+
+//STUFF ABOVE THIS WAS PASTED IN, get rid of this if something bad happens
 
 
 
