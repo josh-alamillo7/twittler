@@ -77,12 +77,15 @@
         $('button').on('click', function() {
 
           displayTweets(tweetIndexTracker);
+          $('.userlink').on('click', userlinkHandler);
 
           });
 
 
 
-        $('.userlink').on('click', function() {
+        $('.userlink').on('click', userlinkHandler);
+
+        function userlinkHandler() {
 
           var username = $(this).text()
           $body.empty()
@@ -123,10 +126,10 @@
             $body.empty()
             displayTweets(tweetIndexTracker)
 
-          
-          });
-          
+
+
         });
+        };
 
       });
 
